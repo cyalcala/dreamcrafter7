@@ -1,16 +1,18 @@
-import Vibrant from 'node-vibrant';
 import { ColorPalette } from './types';
 
 export class ColorAnalyzer {
     async extractColorPalette(imagePath: string): Promise<ColorPalette> {
         try {
+            // Dynamic import for ESM compatibility
+            const vLib = await import('node-vibrant') as any;
+            const Vibrant = vLib.default || vLib;
             const palette = await Vibrant.from(imagePath).getPalette();
             const dominantColors: string[] = [];
             const population: number[] = [];
 
             // Sort colors by population to find truly dominant ones
-            const swatches = Object.values(palette).filter((swatch) => swatch !== null);
-            swatches.sort((a, b) => (b!.population || 0) - (a!.population || 0));
+            const swatches = Object.values(palette).filter((swatch) => swatch !== null) as any[];
+            swatches.sort((a, b) => (b.population || 0) - (a.population || 0));
 
             // Extract top 5
             for (let i = 0; i < Math.min(swatches.length, 5); i++) {

@@ -14,7 +14,8 @@ export class Sanitizer {
     const dir = path.dirname(filePath);
     const ext = path.extname(filePath);
     const name = path.basename(filePath, ext);
-    const sanitizedPath = path.join(dir, `${name}_sanitized.mp4`);
+    // Use a timestamp to avoid conflicts if we sanitize multiple times or similar names
+    const sanitizedPath = path.join(dir, `${name}_fixed_${Date.now()}.mp4`);
 
     console.log(`[Sanitizer] Attempting to fix ${filePath}...`);
 
@@ -25,14 +26,19 @@ export class Sanitizer {
       // -c:a aac: Use widely compatible AAC audio codec
       // -movflags +faststart: Optimize for web playback (optional but good)
       // -y: Overwrite output if exists
-      const command = `ffmpeg -i "${filePath}" -c:v libx264 -preset fast -c:a aac -movflags +faststart "${sanitizedPath}" -y`;
-      
+      const ffmpeg = process.env.FFMPEG_PATH || 'ffmpeg';
+      const command = `"${ffmpeg}" -i "${filePath}" -c:v libx264 -preset fast -c:a aac -movflags +faststart "${sanitizedPath}" -y`;
+
       await execAsync(command);
-      
+
       console.log(`[Sanitizer] Successfully created sanitized version: ${sanitizedPath}`);
       return sanitizedPath;
     } catch (error) {
       console.error(`[Sanitizer] Failed to sanitize ${filePath}:`, error);
+      // Clean up if partial file was created
+      if (fs.existsSync(sanitizedPath)) {
+        fs.unlinkSync(sanitizedPath);
+      }
       throw error; // Propagate error if even sanitization fails
     }
   }

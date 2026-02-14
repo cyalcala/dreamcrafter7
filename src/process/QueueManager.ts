@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { VideoAnalyzer } from '../analyzer/VideoAnalyzer';
 import { Sanitizer } from './Sanitizer';
 import { exportAnalysisToJSON } from '../analyzer/exporter';
+import { CodeGenerator } from './CodeGenerator';
 
 export class QueueManager {
   private inputDir: string;
@@ -11,8 +12,8 @@ export class QueueManager {
   private processedDir: string;
   private failedDir: string;
   private sanitizer: Sanitizer;
-  private processing: Set<string> = new Set();
-  private isProcessing: boolean = false;
+  private codeGenerator: CodeGenerator;
+  private processing: boolean = false;
   private queue: string[] = [];
 
   constructor(inputDir: string, outputDir: string) {
@@ -21,6 +22,7 @@ export class QueueManager {
     this.processedDir = path.join(path.dirname(inputDir), 'processed');
     this.failedDir = path.join(path.dirname(inputDir), 'failed');
     this.sanitizer = new Sanitizer();
+    this.codeGenerator = new CodeGenerator(path.join(process.cwd(), 'src/remotion'));
 
     // Ensure directories exist
     [this.inputDir, this.outputDir, this.processedDir, this.failedDir].forEach(dir => {
@@ -30,7 +32,8 @@ export class QueueManager {
 
   start() {
     console.log(`[QueueManager] Watching ${this.inputDir} for new videos...`);
-    
+    console.log(`[QueueManager] Outputs will be saved to ${this.outputDir}`);
+
     const watcher = chokidar.watch(this.inputDir, {
       ignored: /(^|[\/\\])\../, // ignore dotfiles
       persistent: true,
@@ -48,13 +51,13 @@ export class QueueManager {
   }
 
   private async processNext() {
-    if (this.isProcessing || this.queue.length === 0) return;
+    if (this.processing || this.queue.length === 0) return;
 
-    this.isProcessing = true;
+    this.processing = true;
     const filePath = this.queue.shift();
 
     if (!filePath) {
-      this.isProcessing = false;
+      this.processing = false;
       return;
     }
 
@@ -64,7 +67,7 @@ export class QueueManager {
       console.error(`[QueueManager] Error processing ${filePath}:`, error);
       this.moveToFailed(filePath, error);
     } finally {
-      this.isProcessing = false;
+      this.processing = false;
       this.processNext();
     }
   }
@@ -77,6 +80,7 @@ export class QueueManager {
 
     let workingFilePath = filePath;
     let successfulAnalysis = null;
+    let needsCleanup = false;
 
     // 1. Initial Analysis Attempt
     try {
@@ -84,10 +88,11 @@ export class QueueManager {
       successfulAnalysis = await analyzer.analyze();
     } catch (error) {
       console.warn(`[QueueManager] Initial analysis failed. Attempting sanitization...`);
-      
+
       // 2. Auto-Fix (Sanitization)
       try {
         workingFilePath = await this.sanitizer.sanitize(filePath);
+        needsCleanup = true;
         const analyzer = new VideoAnalyzer(workingFilePath, videoOutputDir);
         successfulAnalysis = await analyzer.analyze();
       } catch (sanitizeError) {
@@ -98,31 +103,50 @@ export class QueueManager {
     if (successfulAnalysis) {
       // 3. Export Results
       await exportAnalysisToJSON(successfulAnalysis, path.join(videoOutputDir, 'analysis.json'));
-      
+
       if (successfulAnalysis.generatedPrompt) {
-          fs.writeFileSync(path.join(videoOutputDir, 'prompt.txt'), successfulAnalysis.generatedPrompt);
+        fs.writeFileSync(path.join(videoOutputDir, 'prompt.txt'), successfulAnalysis.generatedPrompt);
       }
 
+      // 4. Generate Code
+      this.codeGenerator.generateComposition(fileName, successfulAnalysis);
+
       console.log(`[QueueManager] Success! Output saved to ${videoOutputDir}`);
-      this.moveToProcessed(filePath);
-      
-      // Cleanup temp sanitized file if it exists and isn't the original
-      if (workingFilePath !== filePath && fs.existsSync(workingFilePath)) {
-          fs.unlinkSync(workingFilePath);
+      this.moveToProcessed(filePath); // Move original file
+
+      // Cleanup temp sanitized file
+      if (needsCleanup && fs.existsSync(workingFilePath)) {
+        fs.unlinkSync(workingFilePath);
       }
     }
   }
 
   private moveToProcessed(filePath: string) {
     const dest = path.join(this.processedDir, path.basename(filePath));
-    fs.renameSync(filePath, dest);
-    console.log(`[QueueManager] Archived source to ${dest}`);
+    // Check if dest exists to avoid error
+    if (fs.existsSync(dest)) {
+      const name = path.basename(filePath, path.extname(filePath));
+      const ext = path.extname(filePath);
+      const newDest = path.join(this.processedDir, `${name}_${Date.now()}${ext}`);
+      fs.renameSync(filePath, newDest);
+      console.log(`[QueueManager] Archived source to ${newDest}`);
+    } else {
+      fs.renameSync(filePath, dest);
+      console.log(`[QueueManager] Archived source to ${dest}`);
+    }
   }
 
   private moveToFailed(filePath: string, error: any) {
     const dest = path.join(this.failedDir, path.basename(filePath));
-    if(fs.existsSync(filePath)) {
+    if (fs.existsSync(filePath)) {
+      if (fs.existsSync(dest)) {
+        const name = path.basename(filePath, path.extname(filePath));
+        const ext = path.extname(filePath);
+        const newDest = path.join(this.failedDir, `${name}_${Date.now()}${ext}`);
+        fs.renameSync(filePath, newDest);
+      } else {
         fs.renameSync(filePath, dest);
+      }
     }
     const logPath = path.join(this.failedDir, 'error.log');
     const logEntry = `[${new Date().toISOString()}] ${path.basename(filePath)}: ${error}\n`;

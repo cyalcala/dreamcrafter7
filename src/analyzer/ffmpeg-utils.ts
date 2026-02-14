@@ -8,7 +8,8 @@ const execAsync = promisify(exec);
 
 export async function getVideoMetadata(videoPath: string): Promise<VideoMetadata> {
     try {
-        const command = `ffprobe -v quiet -print_format json -show_format -show_streams "${videoPath}"`;
+        const ffprobe = process.env.FFPROBE_PATH || 'ffprobe';
+        const command = `"${ffprobe}" -v quiet -print_format json -show_format -show_streams "${videoPath}"`;
         const { stdout } = await execAsync(command);
         const data = JSON.parse(stdout);
 
@@ -32,8 +33,9 @@ export async function getVideoMetadata(videoPath: string): Promise<VideoMetadata
 
 export async function detectScenes(videoPath: string, threshold: number = 0.4): Promise<SceneSegment[]> {
     try {
+        const ffmpeg = process.env.FFMPEG_PATH || 'ffmpeg';
         // Using select filter to detect scene changes. 'showinfo' prints details to stderr.
-        const command = `ffmpeg -i "${videoPath}" -filter:v "select='gt(scene,${threshold})',showinfo" -f null -`;
+        const command = `"${ffmpeg}" -i "${videoPath}" -filter:v "select='gt(scene,${threshold})',showinfo" -f null -`;
         const { stderr } = await execAsync(command);
 
         const scenes: SceneSegment[] = [];
@@ -90,7 +92,8 @@ export async function extractKeyframes(
             const outputPath = path.join(outputDir, filename);
 
             // -ss before -i is faster seeking
-            const command = `ffmpeg -ss ${time} -i "${videoPath}" -frames:v 1 -q:v 2 "${outputPath}" -y`;
+            const ffmpeg = process.env.FFMPEG_PATH || 'ffmpeg';
+            const command = `"${ffmpeg}" -ss ${time} -i "${videoPath}" -frames:v 1 -q:v 2 "${outputPath}" -y`;
             await execAsync(command);
             filePaths.push(outputPath);
         }
