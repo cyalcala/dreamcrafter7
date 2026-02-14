@@ -31,4 +31,5 @@ export interface VideoAnalysisResult {
     keyframes: Keyframe[];
     colorPalettes: ColorPalette[];
     generatedPrompt?: string;
+    orchestration?: any;
 }

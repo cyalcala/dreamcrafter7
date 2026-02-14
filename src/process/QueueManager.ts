@@ -6,6 +6,7 @@ import { Sanitizer } from './Sanitizer';
 import { exportAnalysisToJSON } from '../analyzer/exporter';
 import { CodeGenerator } from './CodeGenerator';
 import { StabilizationEngine } from './StabilizationEngine';
+import { MultiModelOrchestrator } from '../orchestrator/MultiModelOrchestrator';
 
 export class QueueManager {
   private inputDir: string;
@@ -111,14 +112,20 @@ export class QueueManager {
     }
 
     if (successfulAnalysis) {
-      // 3. Export Results
-      await exportAnalysisToJSON(successfulAnalysis, path.join(videoOutputDir, 'analysis.json'));
+      // 3. Automation: Orchestrate Prompt-Driven Content
+      console.log(`[QueueManager] Orchestrating Multi-Model AI for ${fileName}...`);
+      const orchestrator = new MultiModelOrchestrator();
+      const synthesis = await orchestrator.synthesizeContent(
+        `Create a tech video for ${fileName} with a professional voiceover and b-roll.`
+      );
 
-      if (successfulAnalysis.generatedPrompt) {
-        fs.writeFileSync(path.join(videoOutputDir, 'prompt.txt'), successfulAnalysis.generatedPrompt);
-      }
+      // 4. Export Results
+      await exportAnalysisToJSON({
+        ...successfulAnalysis,
+        orchestration: synthesis
+      }, path.join(videoOutputDir, 'analysis.json'));
 
-      // 4. Generate Code
+      // 5. Generate Code with Orchestrated Content
       this.codeGenerator.generateComposition(fileName, successfulAnalysis);
 
       console.log(`[QueueManager] Success! Output saved to ${videoOutputDir}`);

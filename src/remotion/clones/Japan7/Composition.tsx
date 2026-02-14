@@ -2,6 +2,7 @@
 import { AbsoluteFill, useCurrentFrame, spring, interpolate, Easing } from 'remotion';
 import React from 'react';
 import { z } from 'zod';
+import { AnalogWarmth } from '../../visuals/AnalogWarmth';
 
 // --- SCHEMAS ---
 export const Japan7Schema = z.object({
@@ -210,160 +211,162 @@ export const Japan7: React.FC<z.infer<typeof Japan7Schema>> = ({ title }) => {
   const tiltY = interpolate(frame, [0, 450], [-10, 10]);
 
   return (
-    <AbsoluteFill style={{
-      backgroundColor: '#F9E7D0',
-      fontFamily: '"Arial Black", sans-serif',
-      perspective: '1500px'
-    }}>
-
-      {/* 1. Background Layer (Bright & Upbeat) */}
-      <VibrantSunburst />
-
-      {/* 2. Bloom Assets (Outward Blossoming) */}
-      <BloomAsset type="chip" targetX={-500} targetY={-350} delay={15} color="#E85A23" />
-      <BloomAsset type="brackets" targetX={500} targetY={-300} delay={20} color="#F2AD4E" />
-      <BloomAsset type="wifi" targetX={-550} targetY={300} delay={25} color="#2D1E12" />
-      <BloomAsset type="gear" targetX={550} targetY={250} delay={30} color="#E85A23" />
-      <BloomAsset type="cursor" targetX={0} targetY={-500} delay={35} color="#F2AD4E" />
-      <BloomAsset type="node" targetX={600} targetY={0} delay={40} color="#2D1E12" />
-
-      {/* 3. Master Stage (Non-Malformed Workstation) */}
+    <AnalogWarmth>
       <AbsoluteFill style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transformStyle: 'preserve-3d',
-        transform: `scale(${popSpring}) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`
+        backgroundColor: '#F9E7D0',
+        fontFamily: '"Arial Black", sans-serif',
+        perspective: '1500px'
       }}>
 
-        {/* HUGE CENTRE TITLE */}
-        <div style={{
-          position: 'absolute',
-          top: '8%',
-          color: 'white',
-          fontSize: 240,
-          fontWeight: 900,
-          letterSpacing: '-15px',
-          textShadow: '20px 20px 0px #2D1E12',
-          zIndex: 200,
-          transform: 'translateZ(200px)'
-        }}>
-          {title}
-        </div>
+        {/* 1. Background Layer (Bright & Upbeat) */}
+        <VibrantSunburst />
 
-        {/* --- 3D WORKSTATION (Solid Construction) --- */}
-        <div style={{
-          position: 'relative',
-          marginTop: 100,
+        {/* 2. Bloom Assets (Outward Blossoming) */}
+        <BloomAsset type="chip" targetX={-500} targetY={-350} delay={15} color="#E85A23" />
+        <BloomAsset type="brackets" targetX={500} targetY={-300} delay={20} color="#F2AD4E" />
+        <BloomAsset type="wifi" targetX={-550} targetY={300} delay={25} color="#2D1E12" />
+        <BloomAsset type="gear" targetX={550} targetY={250} delay={30} color="#E85A23" />
+        <BloomAsset type="cursor" targetX={0} targetY={-500} delay={35} color="#F2AD4E" />
+        <BloomAsset type="node" targetX={600} targetY={0} delay={40} color="#2D1E12" />
+
+        {/* 3. Master Stage (Non-Malformed Workstation) */}
+        <AbsoluteFill style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          transformStyle: 'preserve-3d'
+          justifyContent: 'center',
+          transformStyle: 'preserve-3d',
+          transform: `scale(${popSpring}) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`
         }}>
 
-          {/* MONITOR CABINET (Solid Layered 3D) */}
+          {/* HUGE CENTRE TITLE */}
           <div style={{
-            width: 500,
-            height: 420,
-            backgroundColor: '#F9E7D0',
-            border: '20px solid #2D1E12',
-            borderRadius: 35,
-            boxShadow: '30px 30px 0px #2D1E12',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            transform: 'translateZ(50px)',
-            zIndex: 10
+            position: 'absolute',
+            top: '8%',
+            color: 'white',
+            fontSize: 240,
+            fontWeight: 900,
+            letterSpacing: '-15px',
+            textShadow: '20px 20px 0px #2D1E12',
+            zIndex: 200,
+            transform: 'translateZ(200px)'
           }}>
-            {/* Internal Screen */}
+            {title}
+          </div>
+
+          {/* --- 3D WORKSTATION (Solid Construction) --- */}
+          <div style={{
+            position: 'relative',
+            marginTop: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            transformStyle: 'preserve-3d'
+          }}>
+
+            {/* MONITOR CABINET (Solid Layered 3D) */}
             <div style={{
-              width: '90%',
-              height: '80%',
-              backgroundColor: '#2D1E12',
-              borderRadius: 15,
+              width: 500,
+              height: 420,
+              backgroundColor: '#F9E7D0',
+              border: '20px solid #2D1E12',
+              borderRadius: 35,
+              boxShadow: '30px 30px 0px #2D1E12',
               display: 'flex',
-              flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden'
+              transform: 'translateZ(50px)',
+              zIndex: 10
             }}>
-              {/* Scanline Effect */}
+              {/* Internal Screen */}
               <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
-                backgroundSize: '100% 4px, 3px 100%',
-                pointerEvents: 'none',
-                zIndex: 2
-              }} />
-
-              <div style={{
-                color: '#F2AD4E',
-                fontWeight: 900,
-                fontSize: 48,
-                textAlign: 'center',
-                letterSpacing: '2px',
-                textShadow: '0 0 20px rgba(242, 173, 78, 0.6)',
-                fontFamily: 'monospace',
-                zIndex: 3
+                width: '90%',
+                height: '80%',
+                backgroundColor: '#2D1E12',
+                borderRadius: 15,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                SYSTEM<br />READY
+                {/* Scanline Effect */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
+                  backgroundSize: '100% 4px, 3px 100%',
+                  pointerEvents: 'none',
+                  zIndex: 2
+                }} />
+
+                <div style={{
+                  color: '#F2AD4E',
+                  fontWeight: 900,
+                  fontSize: 48,
+                  textAlign: 'center',
+                  letterSpacing: '2px',
+                  textShadow: '0 0 20px rgba(242, 173, 78, 0.6)',
+                  fontFamily: 'monospace',
+                  zIndex: 3
+                }}>
+                  SYSTEM<br />READY
+                </div>
+
+                {/* Small UI corner decors */}
+                <div style={{ position: 'absolute', top: 10, left: 10, width: 20, height: 2, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
+                <div style={{ position: 'absolute', top: 10, left: 10, width: 2, height: 20, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
+                <div style={{ position: 'absolute', bottom: 10, right: 10, width: 20, height: 2, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
+                <div style={{ position: 'absolute', bottom: 10, right: 10, width: 2, height: 20, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
               </div>
-
-              {/* Small UI corner decors */}
-              <div style={{ position: 'absolute', top: 10, left: 10, width: 20, height: 2, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
-              <div style={{ position: 'absolute', top: 10, left: 10, width: 2, height: 20, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
-              <div style={{ position: 'absolute', bottom: 10, right: 10, width: 20, height: 2, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
-              <div style={{ position: 'absolute', bottom: 10, right: 10, width: 2, height: 20, backgroundColor: '#F2AD4E', opacity: 0.5 }} />
             </div>
+
+            {/* COMPUTER STAND */}
+            <div style={{
+              width: 140,
+              height: 80,
+              backgroundColor: '#F9E7D0',
+              border: '12px solid #2D1E12',
+              marginTop: -10,
+              boxShadow: '15px 15px 0px #2D1E12',
+              zIndex: 5
+            }} />
+
+            {/* KEYBOARD (Premium 3D Deck) */}
+            <div style={{
+              width: 600,
+              height: 140,
+              backgroundColor: '#F9E7D0',
+              border: '15px solid #2D1E12',
+              borderRadius: 20,
+              marginTop: -25,
+              boxShadow: '25px 25px 0px #2D1E12',
+              display: 'flex',
+              padding: '20px',
+              gap: '10px',
+              transform: 'rotateX(50deg) translateZ(100px)',
+              zIndex: 50
+            }}>
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} style={{ flex: 1, backgroundColor: '#2D1E12', opacity: 0.15, borderRadius: 5 }} />
+              ))}
+            </div>
+
           </div>
 
-          {/* COMPUTER STAND */}
-          <div style={{
-            width: 140,
-            height: 80,
-            backgroundColor: '#F9E7D0',
-            border: '12px solid #2D1E12',
-            marginTop: -10,
-            boxShadow: '15px 15px 0px #2D1E12',
-            zIndex: 5
-          }} />
+        </AbsoluteFill>
 
-          {/* KEYBOARD (Premium 3D Deck) */}
-          <div style={{
-            width: 600,
-            height: 140,
-            backgroundColor: '#F9E7D0',
-            border: '15px solid #2D1E12',
-            borderRadius: 20,
-            marginTop: -25,
-            boxShadow: '25px 25px 0px #2D1E12',
-            display: 'flex',
-            padding: '20px',
-            gap: '10px',
-            transform: 'rotateX(50deg) translateZ(100px)',
-            zIndex: 50
-          }}>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} style={{ flex: 1, backgroundColor: '#2D1E12', opacity: 0.15, borderRadius: 5 }} />
-            ))}
-          </div>
-
-        </div>
+        {/* Modern Brightness Gloss Overlay */}
+        <AbsoluteFill style={{
+          background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)',
+          pointerEvents: 'none'
+        }} />
 
       </AbsoluteFill>
-
-      {/* Modern Brightness Gloss Overlay */}
-      <AbsoluteFill style={{
-        background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)',
-        pointerEvents: 'none'
-      }} />
-
-    </AbsoluteFill>
+    </AnalogWarmth>
   );
 };

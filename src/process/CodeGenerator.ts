@@ -18,6 +18,11 @@ export class CodeGenerator {
     generateComposition(videoName: string, analysis: VideoAnalysisResult) {
         const componentName = this.sanitizeComponentName(videoName);
         const componentDir = path.join(this.clonesDir, componentName);
+        const orchestration = analysis.orchestration || {
+            script: "System Default: Analysis Complete.",
+            voiceUrl: "",
+            visualCues: []
+        };
 
         if (!fs.existsSync(componentDir)) {
             fs.mkdirSync(componentDir, { recursive: true });
@@ -25,43 +30,70 @@ export class CodeGenerator {
 
         // 1. Create Composition.tsx
         const compositionContent = `
-import { AbsoluteFill, useCurrentFrame, interpolate, spring, Img, staticFile, Audio } from 'remotion';
+import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import React from 'react';
 import { z } from 'zod';
 import { Prompt } from './Prompt';
+import { DreamCrafterBase } from '../../core/DreamCrafterBase';
 
-// Schema for dynamic props
+// AI Orchestrated Schema
 export const ${componentName}Schema = z.object({
-  title: z.string(),
+  title: z.string().default('${componentName}'),
+  script: z.string().default(\`${orchestration.script}\`),
+  voiceUrl: z.string().default('${orchestration.voiceUrl || ''}'),
 });
 
 /**
- * DREAMCRAFTER7 CLONE: ${videoName}
- * This component was automatically generated. 
- * Use the embedded AI Replication Prompt to complete the animation logic.
+ * DREAMCRAFTER7 CORE GENERATED CLONE: ${videoName}
  */
-export const ${componentName}: React.FC<z.infer<typeof ${componentName}Schema>> = ({ title }) => {
+export const ${componentName}: React.FC<z.infer<typeof ${componentName}Schema>> = ({ title, script }) => {
   const frame = useCurrentFrame();
-  const videoName = "${videoName}";
-  
-  // TIP: Use staticFile(\`/clones/\${videoName}/frame_0.png\`) to access extracted assets.
-  
-  return (
-    <AbsoluteFill style={{ backgroundColor: '#000000', color: 'white', fontFamily: 'sans-serif' }}>
-      {/* 1. Reference the Prompt directly in the UI during development */}
-      {/* <Prompt /> */} status: 0
 
-      {/* 2. Your Implementation Goes Here Status: 0 */}
-      <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ padding: 40, border: '2px solid #333', borderRadius: 20, textAlign: 'center' }}>
-              <h1 style={{ fontSize: 60, marginBottom: 20 }}>{title}</h1>
-              <p style={{ opacity: 0.5 }}>Frame: {frame}</p>
-              <div style={{ marginTop: 20, color: '#4A90E2' }}>
-                  Ready for AI Replication...
-              </div>
-          </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
+  return (
+    <DreamCrafterBase title={title} initialScript={script}>
+      {(isEngaged, automation, branch, layout) => (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ 
+                padding: 80 * layout.scaleFactor, 
+                textAlign: 'center',
+                background: 'rgba(255,255,255,0.02)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: 60 * layout.scaleFactor,
+                border: '1px solid rgba(255,255,255,0.1)',
+                transform: \`scale(\${isEngaged ? 1.05 : 1}) rotate(\${branch === 'ACTION' ? 2 : 0}deg)\`,
+                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                width: layout.isPortrait ? '80%' : 'auto'
+            }}>
+                <h1 style={{ 
+                    fontSize: (layout.isPortrait ? 80 : 100) * layout.scaleFactor, 
+                    fontWeight: 900, 
+                    letterSpacing: '-5px',
+                    textShadow: '0 0 50px rgba(74, 144, 226, 0.5)',
+                    color: isEngaged ? '#F2AD4E' : 'white',
+                    marginBottom: 20 * layout.scaleFactor
+                }}>
+                    {title}
+                </h1>
+                
+                <div style={{ 
+                    fontSize: 24 * layout.scaleFactor, 
+                    color: '#4A90E2', 
+                    fontFamily: 'monospace',
+                    maxWidth: 600 * layout.scaleFactor,
+                    margin: '0 auto',
+                    lineHeight: 1.5,
+                    opacity: 0.8
+                }}>
+                    {automation.script}
+                </div>
+
+                <div style={{ marginTop: 40 * layout.scaleFactor, opacity: 0.3, fontSize: 14 * layout.scaleFactor }}>
+                    PATH: {branch} // PLATFORM: {layout.isPortrait ? 'MOBILE' : 'DESKTOP'}
+                </div>
+            </div>
+        </AbsoluteFill>
+      )}
+    </DreamCrafterBase>
   );
 };
 `;

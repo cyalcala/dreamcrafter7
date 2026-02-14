@@ -10,57 +10,41 @@ export class PromptGenerator {
         const fps = Math.round(metadata.fps);
         const duration = Math.round(metadata.duration);
 
-        return `# VIDEO REPLICATION TECHNICAL BREAKDOWN
-## Goal: Create a production-ready Remotion clone of this animation.
+        return `# DREAMCRAFTER7: AI REPLICATION MISSION
+## Goal: Create a high-fidelity, interactive, and aesthetic Remotion clone.
 
 ---
 
-## 1. VISUAL SPECS (The Design System)
-### Colors
+## 1. VISUAL SPECS (The High-Tech Aesthetic)
+### Colors & Shaders
 - **Dominant Palette:** [${distinctColorsArray}]
-- **Action:** Map these to Backgrounds, Accents, and Text. Use precise Hex codes found in the video.
+- **Aesthetic Requirement:** Wrap the entire composition in the \`<AnalogWarmth />\` component to simulate film grain, jitter, and chromatic aberration.
+- **Graphic Style:** Follow a "Modern Tech" or "Retro-Digital" look. Use glassmorphism and high-contrast shadows.
 
-### Typography
-- **Font Family:** Analyze if it is Sans-Serif (Clean/Modern) or Serif. Recommend Inter/Roboto as fallback.
-- **Hierarchy:** Define sizes and weights for Titles, Subtitles, and Body text.
+### 2. 3D GRAPHICS (WebGPU / 3DGS)
+- **Requirement:** Implement a central 3D element using \`@remotion/three\`. 
+- **Goal:** If possible, use 3D Gaussian Splatting placeholders for real-world scene depth. At minimum, implement complex 3D transforms using \`preserve-3d\`.
 
-### Layout
-- **Style:** ${metadata.width > metadata.height ? 'Landscape (16:9 style)' : 'Vertical/Portrait Style'}.
-- **Container:** Centered card, full background, or floating interface?
-
----
-
-## 2. VIDEO CONFIGURATION (The Canvas)
-- **Dimensions:** ${metadata.width} x ${metadata.height}
-- **FPS:** ${fps} fps
-- **Duration:** ${duration} seconds (${frames} frames)
+### 3. ENGAGEMENT (Non-Linear React State)
+- **Requirement:** The video MUST be interactive. 
+- **Logic:** Implement a \`useState\` called \`isEngaged\`. On click, trigger a visual "surge" (faster animations, color shifts, or confetti bursts).
 
 ---
 
-## 3. DATA & PROPS (The Schema)
-- **Props to Extract:** Identify dynamic elements (Headers, Names, Prices, Image URLs).
-- **Zod Schema:** Define a strict \`z.object\` to make these elements customizable via Remotion props.
+## 4. VIDEO CONFIGURATION
+- **Canvas:** ${metadata.width} x ${metadata.height} @ ${metadata.fps} fps
+- **Duration:** ${duration}s (${frames} frames)
 
 ---
 
-## 4. ANIMATION LOGIC (The Choreography)
-- **Phase 1 (Entry):** Define the sequence for frames [0 - ${Math.round(frames * 0.15)}].
-- **Phase 2 (Active):** Define main interactions for frames [${Math.round(frames * 0.15)} - ${Math.round(frames * 0.8)}].
-- **Phase 3 (Exit/Hold):** Define final state for frames [${Math.round(frames * 0.8)} - ${frames}].
-- **Motion Parameters:**
-  - Use \`spring()\` for natural bouncy movements (Entry/Exit).
-  - Use \`interpolate()\` for linear transitions and typewriter effects.
-
----
-
-## 5. THE AI REPLICATION PROMPT (READY TO COPY)
-**Instructions for AI Assistant:**
-"Create a production-ready Remotion composition that replicates this UI animation. 
+## 5. REPLICATION INSTRUCTIONS FOR AI:
+"Build a production-ready Remotion composition that matches these visual specs. 
 - Use **React + TypeScript + Zod**.
-- All animations must be **frame-based** (use \`useCurrentFrame\`).
-- Implement the design system defined in Section 1.
-- Use the Canvas specs in Section 2.
-- Ensure the code follows the **Modern Code Structure**: Imports → Zod Schema → Sub-components → Main Composition.
-- **Critial Requirement:** Do not use CSS transitions. Use \`interpolate\` and \`spring\` for all motion."`;
+- **Choreography:** Phase entry [0-15%], Active [15-80%], Exit [80-100%].
+- **Tech Stack:**
+    - Always use \`spring()\` and \`interpolate()\` for motion.
+    - Always wrap in \`AnalogWarmth\`.
+    - Always include a \`ThreeCanvas\` for 3D elements.
+    - Always implement an interactive state surge on click."`;
     }
 }
