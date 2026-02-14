@@ -5,7 +5,7 @@ import { ClonedCompositions } from './clones/registry';
 export const RemotionRoot: React.FC = () => {
     return (
         <>
-            <Folder name="Cloned Projects">
+            <Folder name="Cloned-Projects">
                 {ClonedCompositions.map((comp) => (
                     <Composition
                         key={comp.id}
