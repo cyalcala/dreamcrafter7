@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "duration": 19.146,
+    "fps": 12800,
+    "width": 710,
+    "height": 546,
+    "codec": "h264",
+    "bitrate": 280596
+  },
+  "scenes": [],
+  "keyframes": [
+    {
+      "timestamp": 0,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0000.png"
+    },
+    {
+      "timestamp": 2,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0001.png"
+    },
+    {
+      "timestamp": 4,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0002.png"
+    },
+    {
+      "timestamp": 6,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0003.png"
+    },
+    {
+      "timestamp": 8,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0004.png"
+    },
+    {
+      "timestamp": 10,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0005.png"
+    },
+    {
+      "timestamp": 12,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0006.png"
+    },
+    {
+      "timestamp": 14,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0007.png"
+    },
+    {
+      "timestamp": 16,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0008.png"
+    },
+    {
+      "timestamp": 18,
+      "frameNumber": -1,
+      "filePath": "C:\\Users\\admin\\Desktop\\DreamCrafter7\\public\\clones\\manila\\temp_frames\\frame_0009.png"
+    }
+  ],
+  "colorPalettes": [
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    },
+    {
+      "dominantColors": [],
+      "population": []
+    }
+  ],
+  "generatedPrompt": "Please analyze the attached UI animation for replication in Remotion.dev. I need a deep technical breakdown that covers the following 5 layers to ensure the generated code is production-ready.\n\n1. VISUAL SPECS (The Design System)\n- Colors: The video contains these dominant Hex codes: []. Use these to extract specific backgrounds, accents, and text colors.\n- Typography: Font style (Serif/Sans), approximated weights, and tabular figures if numbers change.\n- Layout: Is it a centered card, full-screen, or split view?\n- Assets: Identify any SVGs, icons, or images needed.\n\n2. VIDEO CONFIGURATION (The Canvas)\n- Dimensions: 710x546 (Landscape).\n- FPS: 12800fps.\n- Duration: 19 seconds (245069 frames).\n\n3. DATA & PROPS (The Schema)\n- What data is displayed? (Text headers, numbers, image URLs).\n- Define the zod schema: Which of these elements should be customizable props? (e.g., \"Make the 'Price' and 'User Avatar' dynamic props\").\n\n4. ANIMATION LOGIC (The Choreography)\n- Breakdown by Frame (approximate):\n- [Frame 0-10]: Initial state.\n- [Frame 10-30]: Entry animation (Trigger).\n- [Frame 30-End]: Secondary effects.\n- Type of Motion:\n- Spring (Bouncy/Natural) -> Suggest Stiffness/Damping settings.\n- Interpolate (Linear/Eased) -> Suggest Input/Output ranges.\n\n5. THE REPLICATION PROMPT\n- Write a single, high-density prompt that I can paste into an AI coding assistant.\n- It must explicitly ask for a React Functional Component using remotion, zod, useCurrentFrame, and spring/interpolate based on the specs above."
+}
