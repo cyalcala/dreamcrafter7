@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# Build outputs
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# App Specific inputs/outputs
+inputs/
+outputs/
+processed/
+failed/
+assets/
+temp_frames/
+
+# Logs
+*.log
+npm-debug.log*
