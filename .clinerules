@@ -1,0 +1,28 @@
+# DreamCrafter7 Agent Rules (Cline/Cursor/Antigravity)
+
+You are an AI agent helping to build high-quality Remotion video clones in the DreamCrafter7 project.
+
+## Project Overview
+DreamCrafter7 is an automated video replication system.
+- `inputs/`: Place original videos here for analysis.
+- `src/remotion/clones/`: Generated components go here.
+- `registry.ts`: The central list of all available video compositions.
+
+## How to Build a Clone
+When a new video is added, the system generates a directory in `src/remotion/clones/[ComponentName]`.
+1. **Locate the Prompt**: Open `Prompt.tsx` in the component directory. It contains the AI Replication Prompt.
+2. **Implement in Composition.tsx**: Use the instructions from the prompt to replace the boilerplate in `Composition.tsx`.
+3. **Assets**: Use `staticFile(\`/clones/\${videoName}/frame_x.png\`)` to access assets extracted from the original video.
+
+## Graphic Design Standards
+Always strive for "Premium" aesthetics:
+- Use HSL-based harmonious colors.
+- Avoid browser defaults; use system fonts or Google Fonts.
+- Implement 3D transforms (`preserve-3d`, `rotateX/Y`).
+- Add motion blur and spring physical animations.
+- Use `Math.sin()` for "breathing" life into idle objects.
+
+## Code Standards
+- Use `zod` for props validation.
+- Every component should be responsive to `width` and `height` from `useVideoConfig()`.
+- Keep components small and modular.

@@ -1,0 +1,15 @@
+# DreamCrafter7 Cursor Rules
+
+Follow these rules when working on this project:
+
+- **Component Creation**: All new video clones go into `src/remotion/clones/`.
+- **Registry Management**: Always update `src/remotion/clones/registry.ts` when adding a new composition.
+- **Aesthetics**: Follow the "Japan7" style guide—high contrast, smooth 3D transforms, and custom geometric decors.
+- **Testing**: Run `npm test` after adding new core logic in `src/process` or `src/analyzer`.
+- **Environment**: Use the VS Code tasks (Cmd+Shift+B) to start the studio and watcher.
+
+When generating code for `Composition.tsx`:
+- Use `useCurrentFrame()` for animation.
+- Use `spring()` for entry/exit animations.
+- Use `interpolate()` for smooth transitions between states.
+- Always include a `Schema` for props even if it's empty.

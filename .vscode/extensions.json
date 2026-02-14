@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "ms-vscode.vscode-typescript-next",
+        "remotion.remotion",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "saoudrizwan.claude-dev"
+    ]
+}

@@ -1,8 +1,11 @@
+import { Japan7 } from './Japan7/Composition';
 import { AiCalls } from './AiCalls/Composition';
 import { BpoWork } from './BpoWork/Composition';
 import { Manila } from './Manila/Composition';
 import React from 'react';
 import { Travel77 } from './Travel77/Composition';
+import { CatTech } from './CatTech/Composition';
+
 
 export type ClonedComposition = {
     id: string;
@@ -64,4 +67,25 @@ export const ClonedCompositions: ClonedComposition[] = [
         defaultProps: {
             title: 'BPO Work Manila'
         }
+    },
+    {
+        id: 'Japan7',
+        component: Japan7,
+        durationInFrames: 450,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+            title: 'ANSAYA!',
+            subtitle: 'ANSAYA!'
+        }
+    },
+    {
+        id: 'CatTech',
+        component: CatTech,
+        durationInFrames: 300,
+        fps: 30,
+        width: 1920,
+        height: 1080,
     },];
+

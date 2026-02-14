@@ -5,6 +5,7 @@ import { VideoAnalyzer } from '../analyzer/VideoAnalyzer';
 import { Sanitizer } from './Sanitizer';
 import { exportAnalysisToJSON } from '../analyzer/exporter';
 import { CodeGenerator } from './CodeGenerator';
+import { StabilizationEngine } from './StabilizationEngine';
 
 export class QueueManager {
   private inputDir: string;
@@ -13,6 +14,7 @@ export class QueueManager {
   private failedDir: string;
   private sanitizer: Sanitizer;
   private codeGenerator: CodeGenerator;
+  private stabilizationEngine: StabilizationEngine;
   private processing: boolean = false;
   private queue: string[] = [];
 
@@ -23,6 +25,14 @@ export class QueueManager {
     this.failedDir = path.join(path.dirname(inputDir), 'failed');
     this.sanitizer = new Sanitizer();
     this.codeGenerator = new CodeGenerator(path.join(process.cwd(), 'src/remotion'));
+    this.stabilizationEngine = new StabilizationEngine({
+      input: this.inputDir,
+      output: this.outputDir,
+      processed: this.processedDir
+    });
+
+    // Run self-heal on startup
+    this.stabilizationEngine.selfHeal();
 
     // Ensure directories exist
     [this.inputDir, this.outputDir, this.processedDir, this.failedDir].forEach(dir => {
@@ -118,6 +128,9 @@ export class QueueManager {
       if (needsCleanup && fs.existsSync(workingFilePath)) {
         fs.unlinkSync(workingFilePath);
       }
+
+      // Auto-Clean temp assets to prevent storage bloat
+      this.stabilizationEngine.selfClean();
     }
   }
 

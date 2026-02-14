@@ -49,9 +49,9 @@ export const ${componentName}: React.FC<z.infer<typeof ${componentName}Schema>> 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000000', color: 'white', fontFamily: 'sans-serif' }}>
       {/* 1. Reference the Prompt directly in the UI during development */}
-      <Prompt />
+      {/* <Prompt /> */} status: 0
 
-      {/* 2. Your Implementation Goes Here */}
+      {/* 2. Your Implementation Goes Here Status: 0 */}
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
           <div style={{ padding: 40, border: '2px solid #333', borderRadius: 20, textAlign: 'center' }}>
               <h1 style={{ fontSize: 60, marginBottom: 20 }}>{title}</h1>

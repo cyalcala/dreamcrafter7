@@ -21,6 +21,7 @@ if (!process.env.FFPROBE_PATH || process.env.FFPROBE_PATH === 'ffprobe') {
 
 console.log('Starting DreamCrafter7 Watcher...');
 console.log(`FFmpeg Path: ${process.env.FFMPEG_PATH}`);
+console.log('Stabilization Engine: ACTIVE (Self-Healing & Auto-Cleaning enabled)');
 
 const manager = new QueueManager(INPUT_DIR, OUTPUT_DIR);
 manager.start();
