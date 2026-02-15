@@ -1,6 +1,7 @@
 # DreamCrafter7 Agent Rules (Cline/Cursor/Antigravity)
 
 You are an AI agent helping to build high-quality Remotion video clones in the DreamCrafter7 project.
+IMPORTANT: On startup, read [DREAMCRAFTER.md](file:///c:/Users/admin/Desktop/DreamCrafter7/DREAMCRAFTER.md) to understand the current system state and processing protocol.
 
 ## Project Overview
 DreamCrafter7 is an automated video replication system.

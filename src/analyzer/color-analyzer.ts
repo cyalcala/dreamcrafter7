@@ -3,9 +3,9 @@ import { ColorPalette } from './types';
 export class ColorAnalyzer {
     async extractColorPalette(imagePath: string): Promise<ColorPalette> {
         try {
-            // Dynamic import for ESM compatibility
-            const vLib = await import('node-vibrant') as any;
-            const Vibrant = vLib.default || vLib;
+            // Dynamic import for ESM compatibility with Node.js
+            const vLib = await import('node-vibrant/node') as any;
+            const Vibrant = vLib.Vibrant || vLib;
             const palette = await Vibrant.from(imagePath).getPalette();
             const dominantColors: string[] = [];
             const population: number[] = [];
@@ -18,8 +18,8 @@ export class ColorAnalyzer {
             for (let i = 0; i < Math.min(swatches.length, 5); i++) {
                 const swatch = swatches[i];
                 if (swatch) {
-                    dominantColors.push(swatch.getHex());
-                    population.push(swatch.population);
+                    dominantColors.push(swatch.hex || (swatch.getHex ? swatch.getHex() : '#000000'));
+                    population.push(swatch.population || 0);
                 }
             }
 

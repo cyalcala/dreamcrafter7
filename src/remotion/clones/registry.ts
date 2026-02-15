@@ -1,10 +1,13 @@
+import { Asia9 } from './Asia9/Composition';
 import { Japan7 } from './Japan7/Composition';
 import { AiCalls } from './AiCalls/Composition';
 import { BpoWork } from './BpoWork/Composition';
 import { Manila } from './Manila/Composition';
 import React from 'react';
 import { Travel77 } from './Travel77/Composition';
+import { Asia8 } from './Asia8/Composition';
 import { CatTech } from './CatTech/Composition';
+import { Asia8Schema } from './Asia8/Composition';
 
 
 export type ClonedComposition = {
@@ -87,5 +90,27 @@ export const ClonedCompositions: ClonedComposition[] = [
         fps: 30,
         width: 1920,
         height: 1080,
-    },];
-
+    },
+    {
+        id: 'Asia8',
+        component: Asia8,
+        durationInFrames: 690,
+        fps: 30,
+        width: 654,
+        height: 782,
+        defaultProps: {
+            title: 'ANSAYA!',
+        }
+    },
+    {
+        id: 'Asia9',
+        component: Asia9,
+        durationInFrames: 300,
+        fps: 30,
+        width: 654,
+        height: 782,
+        defaultProps: {
+            title: 'Asia9'
+        }
+    },
+];

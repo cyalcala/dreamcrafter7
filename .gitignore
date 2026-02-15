@@ -12,3 +12,13 @@ public/clones/
 # Logs
 *.log
 npm-debug.log*
+
+# DreamCrafter7 System Files
+processing.lock
+system-state.json
+.registry-backups/
+failed/error.log
+
+# OS files
+.DS_Store
+Thumbs.db

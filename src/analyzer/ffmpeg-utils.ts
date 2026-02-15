@@ -18,9 +18,26 @@ export async function getVideoMetadata(videoPath: string): Promise<VideoMetadata
             throw new Error('No video stream found');
         }
 
+        // Use avg_frame_rate as it's often more reliable for VFR, fallback to r_frame_rate
+        let fps = 0;
+        try {
+            fps = eval(videoStream.avg_frame_rate);
+            if (!fps || fps > 120 || fps < 1) {
+                fps = eval(videoStream.r_frame_rate);
+            }
+        } catch (e) {
+            fps = eval(videoStream.r_frame_rate);
+        }
+
+        // Sanity check: cap extreme FPS values (likely calculation errors or weird timebases)
+        if (fps > 120 || !fps) {
+            console.warn(`[ffmpeg-utils] Detected unusual FPS (${fps}). Defaulting to 30.`);
+            fps = 30;
+        }
+
         return {
             duration: parseFloat(data.format.duration),
-            fps: eval(videoStream.r_frame_rate), // careful with eval, but safe for r_frame_rate standard format "30000/1001"
+            fps: fps,
             width: videoStream.width,
             height: videoStream.height,
             codec: videoStream.codec_name,
